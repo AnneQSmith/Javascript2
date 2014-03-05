@@ -17,25 +17,131 @@
     <h1>Sorting Hat</h1>
     
     <div class="container">
+
+        <div class="form">
+            <input type="number" id="student_count">
+            <button id="set_student_count">Set Student Count</button>
+            <div id="count"></div>
+            </div>
+
+        <div class="form">
+            <input type="text" id="student_name">
+            <button id="set_student_name">Sort</button>
+            <div id="sname"></div>
+            </div>
+
         <div class="house col-md-2">
-            Gryffindor
-        </div>
+            <h3>Gryffindor</h3>
+            <ul id = "Gryffindor">
+                </ul>
+            </div>
+
         <div class="house col-md-2">
-            Hufflepuff
-        </div>
+            <h3>Hufflepuff</h3>
+            <ul id = "Hufflepuff">
+                </ul>
+            </div>
+
         <div class="house col-md-2">
-            Ravenclaw
-        </div>
+            <h3>Ravenclaw</h3>
+            <ul id = "Ravenclaw">
+                </ul>
+            </div>
+
         <div class="house col-md-2">
-            Slytherin
-        </div>
+            <h3>Slytherin</h3>
+            <ul id = "Slytherin">
+                </ul>
+            </div>
+
         <div class="house col-md-2">
-            Dumbledore's Army
-        </div>
+            <h3>Dumbledore's Army</h3>
+            <ul id = "Dumbledore's Army">
+                </ul>
+            </div>
+
     </div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://code.jquery.com/jquery.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+    //Javascript goes here, and runs when the page loads.
+
+   // document.getElementsByClassName('house')[0].getElementsByTagName('h3')
+        var studentCount = 0;
+        var remainingCount = 2;
+
+        var countButton = document.getElementById("set_student_count");
+
+        var studentName = '';
+        var nameButton = document.getElementById("set_student_name");
+        
+        var studentNameBox =  document.getElementById("student_name");
+
+        var countDiv = document.getElementById("count");
+        var houseDivs = document.getElementsByClassName('house');
+        var houses = [];
+        var maxPerHouse = 0;
+
+    // Find the number of houses:
+
+        var numHouses = houseDivs.length;
+
+        for (var i = 0; i < numHouses; i++){
+            houses[i] = houseDivs[i].getElementsByTagName('h3')[0].innerHTML;
+        }
+
+
+        countButton.addEventListener('click', function(){                  
+
+            var numberInputBox = document.getElementById("student_count");
+
+            var n = 0;
+
+            if (numberInputBox) {
+                n = Number(numberInputBox.value);
+                studentCount += n;
+            }
+
+            countDiv.innerHTML = studentCount;
+            numberInputBox.value  = 0;  
+
+        });
+
+       nameButton.addEventListener('click', function(){        
+            
+            var randomHouse = Math.floor((Math.random()*numHouses));
+       //     console.log("Random House " + houses[randomHouse]);
+            maxPerHouse = Math.ceil(studentCount/numHouses);
+
+            var nameList = document.getElementById(houses[randomHouse]);
+            
+            var studentNameBox = document.getElementById("student_name");
+
+            if (studentNameBox) {
+                 studentName = studentNameBox.value;
+
+                 if (remainingCount > 0) {   
+                    while (maxPerHouse <= nameList.children.length){
+                        randomHouse = Math.floor((Math.random()*numHouses));
+                        nameList = document.getElementById(houses[randomHouse]);
+                    }
+   
+                    var li = document.createElement("li");
+                    li.appendChild(document.createTextNode(studentName));
+                    nameList.appendChild(li);
+                    remainingCount = Math.max(0, countDiv.innerHTML-=1);
+
+                }
+
+            }
+            // reset randomHouse for next sort
+            randomHouse = Math.floor((Math.random()*numHouses));
+            studentNameBox.value  = "";  
+
+        });
+    </script>
   </body>
 </html>
